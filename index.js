@@ -3,9 +3,10 @@ const { ethers } = require('ethers')
 require('dotenv').config()
 
 const app = express()
-
-const provider = new ethers.providers.InfuraProvider('arbitrum-sepolia', process.env.INFURA_PROJECT_ID)
-const wallet = new ethers.Wallet(process.env.MINTER_PRIVATE_KEY, provider)
+const infuraProjectId = process.env.INFURA_PROJECT_ID
+const arbitrumSepoliaRpcUrl = `https://arbitrum-sepolia.infura.io/v3/${infuraProjectId}`
+const arbitrumSepoliaProvider = new ethers.providers.JsonRpcProvider(arbitrumSepoliaRpcUrl)
+const wallet = new ethers.Wallet(process.env.MINTER_PRIVATE_KEY, arbitrumSepoliaProvider)
 const contractAddress = process.env.LEMONXUSDC_CONTRACT_ADDRESS
 const abi = [
     {
