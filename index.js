@@ -29,7 +29,16 @@ const abi = [
     },
 ]
 
+
+
 const contract = new ethers.Contract(contractAddress, abi, wallet)
+
+require('dotenv').config()
+
+console.log('INFURA_PROJECT_ID:', process.env.INFURA_PROJECT_ID)
+console.log('MINTER_PRIVATE_KEY:', process.env.MINTER_PRIVATE_KEY)
+console.log('LEMONXUSDC_CONTRACT_ADDRESS:', process.env.LEMONXUSDC_CONTRACT_ADDRESS)
+console.log('PORT:', process.env.PORT)
 
 app.get('/faucet', async (req, res) => {
     const { userAddress, chainID } = req.query
