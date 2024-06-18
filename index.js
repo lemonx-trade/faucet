@@ -32,10 +32,11 @@ const abi = [
 const contract = new ethers.Contract(contractAddress, abi, wallet)
 
 app.get('/faucet', async (req, res) => {
-    const { userAddress, chainID } = req.query;
+    const userAddress = req.query.wallet // Update to match the URL parameter
+    const chainID = req.query.chainId // Update to match the URL parameter
     console.log(`Received request: userAddress=${userAddress}, chainID=${chainID}`);
     try {
-        const tx = await contract.mint(userAddress, ethers.utils.parseUnits('1.0', 18)); // Adjust amount as needed
+        const tx = await contract.mint(userAddress, ethers.utils.parseUnits('1000.0', 18)); // Adjust amount as needed
         await tx.wait();
         console.log(`Transaction successful: ${tx.hash}`);
         res.status(200).send({ data: { txHash: tx.hash, message: 'Funds sent successfully' } });  // Returns txHash and message on success
