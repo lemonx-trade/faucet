@@ -1,6 +1,8 @@
 const express = require('express')
 const { ethers } = require('ethers')
 require('dotenv').config()
+const cors = require('cors')
+app.use(cors())
 
 const app = express()
 const infuraProjectId = process.env.INFURA_PROJECT_ID
@@ -34,17 +36,17 @@ const contract = new ethers.Contract(contractAddress, abi, wallet)
 app.get('/faucet', async (req, res) => {
     const userAddress = req.query.wallet // Update to match the URL parameter
     const chainID = req.query.chainId // Update to match the URL parameter
-    console.log(`Received request: userAddress=${userAddress}, chainID=${chainID}`);
+    console.log(`Received request: userAddress=${userAddress}, chainID=${chainID}`)
     try {
-        const tx = await contract.mint(userAddress, ethers.utils.parseUnits('1000.0', 18)); // Adjust amount as needed
-        await tx.wait();
-        console.log(`Transaction successful: ${tx.hash}`);
-        res.status(200).send({ data: { txHash: tx.hash, message: 'Funds sent successfully' } });  // Returns txHash and message on success
+        const tx = await contract.mint(userAddress, ethers.utils.parseUnits('1000.0', 18)) // Adjust amount as needed
+        await tx.wait()
+        console.log(`Transaction successful: ${tx.hash}`)
+        res.status(200).send({ data: { txHash: tx.hash, message: 'Funds sent successfully' } }) // Returns txHash and message on success
     } catch (error) {
-        console.error(`Error minting token: ${error.message}`);
-        res.status(500).send({ data: { errorMessage: error.message } });  // Returns errorMessage on failure
+        console.error(`Error minting token: ${error.message}`)
+        res.status(500).send({ data: { errorMessage: error.message } }) // Returns errorMessage on failure
     }
-});
+})
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
