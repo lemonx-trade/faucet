@@ -1,13 +1,6 @@
 const express = require('express')
 const { ethers } = require('ethers')
-
 require('dotenv').config()
-
-console.log('INFURA_PROJECT_ID:', process.env.INFURA_PROJECT_ID)
-console.log('MINTER_PRIVATE_KEY:', process.env.MINTER_PRIVATE_KEY)
-console.log('LEMONXUSDC_CONTRACT_ADDRESS:', process.env.LEMONXUSDC_CONTRACT_ADDRESS)
-console.log('PORT:', process.env.PORT)
-
 
 const app = express()
 const infuraProjectId = process.env.INFURA_PROJECT_ID
@@ -36,17 +29,18 @@ const abi = [
     },
 ]
 
-
-
 const contract = new ethers.Contract(contractAddress, abi, wallet)
 
 app.get('/faucet', async (req, res) => {
     const { userAddress, chainID } = req.query
+    console.log(`Received request: userAddress=${userAddress}, chainID=${chainID}`)
     try {
         const tx = await contract.mint(userAddress, ethers.utils.parseUnits('1.0', 18)) // Adjust amount as needed
         await tx.wait()
+        console.log(`Transaction successful: ${tx.hash}`)
         res.status(200).send({ txHash: tx.hash })
     } catch (error) {
+        console.error(`Error minting token: ${error.message}`)
         res.status(500).send({ errorMessage: error.message })
     }
 })
