@@ -1,10 +1,11 @@
 const express = require('express')
 const { ethers } = require('ethers')
 require('dotenv').config()
-const cors = require('cors')
-app.use(cors())
+
 
 const app = express()
+const cors = require('cors')
+app.use(cors())
 const infuraProjectId = process.env.INFURA_PROJECT_ID
 const arbitrumSepoliaRpcUrl = `https://arbitrum-sepolia.infura.io/v3/${infuraProjectId}`
 const arbitrumSepoliaProvider = new ethers.providers.JsonRpcProvider(arbitrumSepoliaRpcUrl)
