@@ -32,16 +32,18 @@ const abi = [
 const contract = new ethers.Contract(contractAddress, abi, wallet)
 
 app.get('/faucet', async (req, res) => {
-    const { userAddress, chainID } = req.query
+    const userAddress = req.query.wallet // Update to match the URL parameter
+    const chainID = req.query.chainId // Update to match the URL parameter
+
     console.log(`Received request: userAddress=${userAddress}, chainID=${chainID}`)
+
     try {
         const tx = await contract.mint(userAddress, ethers.utils.parseUnits('1.0', 18)) // Adjust amount as needed
         await tx.wait()
-        console.log(`Transaction successful: ${tx.hash}`)
         res.status(200).send({ txHash: tx.hash })
     } catch (error) {
-        console.error(`Error minting token: ${error.message}`)
-        res.status(500).send({ errorMessage: error.message })
+        console.error('Error in /faucet route:', error)
+        res.status(500).send({ errorMessage: error.message, errorStack: error.stack })
     }
 })
 
