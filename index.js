@@ -7,9 +7,9 @@ const app = express()
 const cors = require('cors')
 app.use(cors())
 const infuraProjectId = process.env.INFURA_PROJECT_ID
-const arbitrumSepoliaRpcUrl = `https://arbitrum-sepolia.infura.io/v3/${infuraProjectId}`
-const arbitrumSepoliaProvider = new ethers.providers.JsonRpcProvider(arbitrumSepoliaRpcUrl)
-const wallet = new ethers.Wallet(process.env.MINTER_PRIVATE_KEY, arbitrumSepoliaProvider)
+const coreTestnetRpcUrl = `https://rpc.test.btcs.network`
+const coreTestnetProvider = new ethers.providers.JsonRpcProvider(coreTestnetRpcUrl)
+const wallet = new ethers.Wallet(process.env.MINTER_PRIVATE_KEY, coreTestnetProvider)
 const contractAddress = process.env.LEMONXUSDC_CONTRACT_ADDRESS
 const abi = [
     {
