@@ -5,11 +5,17 @@ const cors = require('cors')
 app.use(cors())
 
 const app = express()
-const infuraProjectId = process.env.INFURA_PROJECT_ID
-const arbitrumSepoliaRpcUrl = `https://arbitrum-sepolia.infura.io/v3/${infuraProjectId}`
-const arbitrumSepoliaProvider = new ethers.providers.JsonRpcProvider(arbitrumSepoliaRpcUrl)
-const wallet = new ethers.Wallet(process.env.MINTER_PRIVATE_KEY, arbitrumSepoliaProvider)
+const rpc_url = process.env.RPC_URL
+const provider = new ethers.providers.JsonRpcProvider(rpc_url)
+const wallet = new ethers.Wallet(process.env.MINTER_PRIVATE_KEY, provider)
 const contractAddress = process.env.LEMONXUSDC_CONTRACT_ADDRESS
+
+console.log("rpc_url => ", rpc_url)
+console.log("provider => ", provider)
+console.log("wallet => ", wallet)
+console.log("contractAddress => ", contractAddress)
+
+
 const abi = [
     {
         type: 'function',
@@ -33,7 +39,12 @@ const abi = [
 
 const contract = new ethers.Contract(contractAddress, abi, wallet)
 
+
 app.get('/faucet', async (req, res) => {
+    console.log("rpc_url => ", rpc_url)
+    console.log("provider => ", provider)
+    console.log("wallet => ", wallet)
+    console.log("contractAddress => ", contractAddress)
     const userAddress = req.query.wallet // Update to match the URL parameter
     const chainID = req.query.chainId // Update to match the URL parameter
     console.log(`Received request: userAddress=${userAddress}, chainID=${chainID}`)
