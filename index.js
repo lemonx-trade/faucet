@@ -1,13 +1,15 @@
 const express = require('express')
 const { ethers } = require('ethers')
 require('dotenv').config()
-const cors = require('cors')
-app.use(cors())
+
 
 const app = express()
+
 const rpc_url = process.env.RPC_URL
 const provider = new ethers.providers.JsonRpcProvider(rpc_url)
 const wallet = new ethers.Wallet(process.env.MINTER_PRIVATE_KEY, provider)
+const cors = require('cors')
+app.use(cors())
 const contractAddress = process.env.LEMONXUSDC_CONTRACT_ADDRESS
 
 console.log("rpc_url => ", rpc_url)
